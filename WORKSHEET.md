@@ -8,7 +8,7 @@ This is the worksheet for Homework 1. Your deliverables for this homework are:
 - [ ] Kaggle submission and writeup (details below)
 - [ ] Github repo with all of your code! You need to either fork it or just copy the code over to your repo. A simple way of doing this is provided below. Include the link to your repo below. If you would like to make the repo private, please dm us and we'll send you the GitHub usernames to add as collaborators.
 
-`YOUR GITHUB REPO HERE (or notice that you DMed us to share a private repo)`
+[`MY GITHUB REPO HERE`](https://github.com/jaansiparsa/model-zhou.git)
 
 ## To move to your own repo:
 
@@ -28,16 +28,15 @@ Feel free to ask your NMEP friends if you don't know!
 
 ## -1.0 What is the difference between `torch.nn.Module` and `torch.nn.functional`?
 
-`YOUR ANSWER HERE`
+All custom models are made by subclassing nn.Module; it provides functionality for definining layers, weights, activation functions, etc. (all the stuff you'd typically need for neural network modules) in Pytorch. A model you'd make with nn.Module would have a forward method and inside that forward method you'd be able to use functions contained in torch.nn.funcional (ReLU, max pooling, etc). 
 
 ## -1.1 What is the difference between a Dataset and a DataLoader?
 
-`YOUR ANSWER HERE`
+A Dataset is the actual data points/their labels, while a DataLoader is how you batch and shuffle the data.
 
 ## -1.2 What does `@torch.no_grad()` above a function header do?
 
-`YOUR ANSWER HERE`
-
+In training you want to do backprop so you keep gradients on but in predictions/inference you don't want to change any weights so you turn the gradients off by signaling @torch.no_grad() 
 
 
 # Part 0: Understanding the codebase
@@ -46,19 +45,19 @@ Read through `README.md` and follow the steps to understand how the repo is stru
 
 ## 0.0 What are the `build.py` files? Why do we have them?
 
-`YOUR ANSWER HERE`
+The build.py files have all the cofigs used in the actual code. This makes it so that any time you want to change the configs you don't have to change the core code and can just change the build.py files. It also makes it so that you can experiment with different configs (through different build files).
 
 ## 0.1 Where would you define a new model?
 
-`YOUR ANSWER HERE`
+Files in the models folder (e.g. lenet.py and resnet.py)
 
 ## 0.2 How would you add support for a new dataset? What files would you need to change?
 
-`YOUR ANSWER HERE`
+Classes within datasets.py
 
 ## 0.3 Where is the actual training code?
 
-`YOUR ANSWER HERE`
+main.py
 
 ## 0.4 Create a diagram explaining the structure of `main.py` and the entire code repo.
 
