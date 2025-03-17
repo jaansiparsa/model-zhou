@@ -152,7 +152,7 @@ Visualize ~10 or so examples from the dataset. There's many ways to do it - you 
 
 Be sure to also get the class names. You might notice that we don't have them loaded anywhere in the repo - feel free to fix it or just hack it together for now, the class names are in a file in the same folder as the hdf5 dataset.
 
-[![image here]](./home/jaansi/fa24-nmep-hw2/data/output_image2.png)
+[link to image](https://github.com/jaansiparsa/model-zhou/blob/main/data/output_image2.png)
 
 
 
