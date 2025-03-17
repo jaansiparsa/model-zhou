@@ -57,7 +57,7 @@ class MediumImagenetHDF5Dataset(Dataset):
         self,
         img_size,
         split: str = "train",
-        filepath: str = "/data/medium-imagenet/medium-imagenet-nmep-96.hdf5",
+        filepath: str = "/honey/nmep/medium-imagenet-96.hdf5",
         augment: bool = True,
     ):
         assert split in ["train", "val", "test"]
@@ -128,3 +128,4 @@ class CIFAR10Dataset(Dataset):
                 transforms.Resize([self.img_size] * 2),
             ]
         return transforms.Compose(transform)
+

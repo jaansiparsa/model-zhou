@@ -65,6 +65,27 @@ Be sure to include the 4 main functions in it (`main`, `train_one_epoch`, `valid
 
 `YOUR ANSWER HERE`
 
+## main.py
+### parse_option():
+Specifies training settings for the model.
+The build and config files also help set up the training environment in both main() and parse()
+
+### train_one_epoch():
+Trains the model and updates weights!
+Training data comes from the dataset in the datasets.py file/data folder.
+This function also uses the optimizer in optimizer.py
+
+### validate():
+Calculates loss and accuracy
+Train and validate are used together during training. One epoch includes both training and validation.
+
+### evaluate()
+Runs on test data for final model predictions.
+
+### main()
+Outlines the entire training process
+Uses train, validate, and evaluate functions
+Also uses configs and dataloaders to create the training and validation datasets.
 
 
 # Part 1: Datasets
@@ -75,53 +96,55 @@ The following questions relate to `data/build.py` and `data/datasets.py`.
 
 ### 1.0.0 What does `build_loader` do?
 
-`YOUR ANSWER HERE`
+It prepares the training, validation, and test datasets to be used in training/testing based on the configs you give it.
 
 ### 1.0.1 What functions do you need to implement for a PyTorch Datset? (hint there are 3)
 
-`YOUR ANSWER HERE`
+get_item, len, and transforms
 
 ## 1.1 CIFAR10Dataset
 
 ### 1.1.0 Go through the constructor. What field actually contains the data? Do we need to download it ahead of time?
 
-`YOUR ANSWER HERE`
+self.dataset stores the data. You can set download=True and it downloads.
+
 
 ### 1.1.1 What is `self.train`? What is `self.transform`?
 
-`YOUR ANSWER HERE`
+self.train is True/False for whether or not the data is training data
+self.transform is the preprocessing/augmentations of the images
 
 ### 1.1.2 What does `__getitem__` do? What is `index`?
 
-`YOUR ANSWER HERE`
+getitem gets the image and corresponding labels at a given index
 
 ### 1.1.3 What does `__len__` do?
 
-`YOUR ANSWER HERE`
+len returns the number of samples in the dataset
 
 ### 1.1.4 What does `self._get_transforms` do? Why is there an if statement?
 
-`YOUR ANSWER HERE`
+If the data is training data, it applies an augmentation
 
 ### 1.1.5 What does `transforms.Normalize` do? What do the parameters mean? (hint: take a look here: https://pytorch.org/vision/main/generated/torchvision.transforms.Normalize.html)
 
-`YOUR ANSWER HERE`
+It normalizes the data to the mean and standard deviation in the parameters
 
 ## 1.2 MediumImagenetHDF5Dataset
 
 ### 1.2.0 Go through the constructor. What field actually contains the data? Where is the data actually stored on honeydew? What other files are stored in that folder on honeydew? How large are they?
 
-`YOUR ANSWER HERE`
+self.file contains the data. Other files such as cifar-10 and tiny-imagenet data are stored in the data folder in honeydew
 
 > *Some background*: HDF5 is a file format that stores data in a hierarchical structure. It is similar to a python dictionary. The files are binary and are generally really efficient to use. Additionally, `h5py.File()` does not actually read the entire file contents into memory. Instead, it only reads the data when you access it (as in `__getitem__`). You can learn more about [hdf5 here](https://portal.hdfgroup.org/display/HDF5/HDF5) and [h5py here](https://www.h5py.org/).
 
 ### 1.2.1 How is `_get_transforms` different from the one in CIFAR10Dataset?
 
-`YOUR ANSWER HERE`
+_get_transforms in the CIFAR dataset normalizes and resizes the images as well, but the one in MediumImageNet doesn't.
 
 ### 1.2.2 How is `__getitem__` different from the one in CIFAR10Dataset? How many data splits do we have now? Is it different from CIFAR10? Do we have labels/annotations for the test set?
 
-`YOUR ANSWER HERE`
+Medium Image Net doesn't have labels for each image during testing, and only labels images with a -1 then. But it still splits the data with train/val/test.
 
 ### 1.2.3 Visualizing the dataset
 
@@ -129,7 +152,8 @@ Visualize ~10 or so examples from the dataset. There's many ways to do it - you 
 
 Be sure to also get the class names. You might notice that we don't have them loaded anywhere in the repo - feel free to fix it or just hack it together for now, the class names are in a file in the same folder as the hdf5 dataset.
 
-`YOUR ANSWER HERE`
+[![image here]](./home/jaansi/fa24-nmep-hw2/data/output_image2.png)
+
 
 
 # Part 2: Models
@@ -138,15 +162,16 @@ The following questions relate to `models/build.py` and `models/models.py`.
 
 ## What models are implemented for you?
 
-`YOUR ANSWER HERE`
+lenet and resnet
 
 ## What do PyTorch models inherit from? What functions do we need to implement for a PyTorch Model? (hint there are 2)
 
-`YOUR ANSWER HERE`
+They inherit from torch.nn.Module. They need to implement a __init__ function and a forward() function.
+
 
 ## How many layers does our implementation of LeNet have? How many parameters does it have? (hint: to count the number of parameters, you might want to run the code)
-
-`YOUR ANSWER HERE`
+6 layers in features + 5 layers in classifier = 11 total layers
+99276 total params
 
 
 
@@ -156,17 +181,21 @@ The following questions relate to `main.py`, and the configs in `configs/`.
 
 ## 3.0 What configs have we provided for you? What models and datasets do they train on?
 
-`YOUR ANSWER HERE`
+lenet_base - trains on CIFAR10
+resnet_base - trains on CIFAR10
+resnet_medium - trains on medium_imagenet
 
 ## 3.1 Open `main.py` and go through `main()`. In bullet points, explain what the function does.
-
-`YOUR ANSWER HERE`
+I'm pretty sure I already explained this but ok
+- gets configs 
+- splits data into training/val/testing
+- trains: train_one_epoch() and validate()
+- finally evaluates on test data
 
 ## 3.2 Go through `validate()` and `evaluate()`. What do they do? How are they different? 
 > Could we have done better by reusing code? Yes. Yes we could have but we didn't... sorry...
-
-`YOUR ANSWER HERE`
-
+validate() calculates loss to update weights as part of training process (using training data)
+evaluate() also calculates accuracy but doesn't update weights because it's own test data
 
 # Part 4: AlexNet
 
@@ -196,7 +225,7 @@ Linear with num_classes output units
 ## 4.1 How many parameters does AlexNet have? How does it compare to LeNet? With the same batch size, how much memory do LeNet and AlexNet take up while training? 
 > (hint: use `gpuststat`)
 
-`YOUR ANSWER HERE`
+`Alexnet: 57.82M params, 1456MB memory. Lenet: 99.28K params, 272MB memory`
 
 ## 4.2 Train AlexNet on CIFAR10. What accuracy do you get?
 
@@ -205,8 +234,7 @@ Report training and validation accuracy on AlexNet and LeNet. Report hyperparame
 > You can just copy the config file, don't need to write it all out again.
 > Also no need to tune the models much, you'll do it in the next part.
 
-`YOUR ANSWER HERE`
-
+`77.62%`
 
 
 # Part 5: Weights and Biases
