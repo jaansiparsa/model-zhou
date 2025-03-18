@@ -1,0 +1,23 @@
+2025-03-17 23:00:00,579 INFO    MainThread:1425577 [wandb_setup.py:_flush():67] Current SDK version is 0.19.8
+2025-03-17 23:00:00,579 INFO    MainThread:1425577 [wandb_setup.py:_flush():67] Configure stats pid to 1425577
+2025-03-17 23:00:00,579 INFO    MainThread:1425577 [wandb_setup.py:_flush():67] Loading settings from /home/jaansi/.config/wandb/settings
+2025-03-17 23:00:00,579 INFO    MainThread:1425577 [wandb_setup.py:_flush():67] Loading settings from /home/jaansi/fa24-nmep-hw2/wandb/settings
+2025-03-17 23:00:00,579 INFO    MainThread:1425577 [wandb_setup.py:_flush():67] Loading settings from environment variables
+2025-03-17 23:00:00,579 INFO    MainThread:1425577 [wandb_init.py:setup_run_log_directory():647] Logging user logs to /home/jaansi/fa24-nmep-hw2/wandb/run-20250317_230000-8c6dkxka/logs/debug.log
+2025-03-17 23:00:00,579 INFO    MainThread:1425577 [wandb_init.py:setup_run_log_directory():648] Logging internal logs to /home/jaansi/fa24-nmep-hw2/wandb/run-20250317_230000-8c6dkxka/logs/debug-internal.log
+2025-03-17 23:00:00,579 INFO    MainThread:1425577 [wandb_init.py:init():761] calling init triggers
+2025-03-17 23:00:00,579 INFO    MainThread:1425577 [wandb_init.py:init():766] wandb.init called with sweep_config: {}
+config: {'BASE': [''], 'DATA': CfgNode({'BATCH_SIZE': 256, 'DATA_PATH': '', 'DATASET': 'cifar10', 'IMG_SIZE': 70, 'INTERPOLATION': 'bicubic', 'PIN_MEMORY': True, 'NUM_WORKERS': 32}), 'MODEL': CfgNode({'NAME': 'alexnet', 'RESUME': '', 'NUM_CLASSES': 200, 'DROP_RATE': 0.0, 'RESNET': CfgNode({})}), 'TRAIN': CfgNode({'START_EPOCH': 0, 'EPOCHS': 50, 'WARMUP_EPOCHS': 10, 'LR': 0.0003, 'MIN_LR': 3e-05, 'WARMUP_LR': 3e-05, 'ACCUMULATION_STEPS': 1, 'LR_SCHEDULER': CfgNode({'NAME': 'cosine'}), 'OPTIMIZER': CfgNode({'NAME': 'adamw', 'EPS': 1e-08, 'BETAS': (0.9, 0.999), 'MOMENTUM': 0.9})}), 'AUG': CfgNode({'COLOR_JITTER': 0.4, 'RAND_AUGMENT': 'rand-m9-mstd0.5-inc1'}), 'TEST': CfgNode({'CROP': True, 'SEQUENTIAL': False, 'SHUFFLE': False}), 'OUTPUT': 'output/alexnet', 'SAVE_FREQ': 5, 'PRINT_FREQ': 99999, 'SEED': 0, 'EVAL_MODE': False, '_wandb': {}}
+2025-03-17 23:00:00,579 INFO    MainThread:1425577 [wandb_init.py:init():784] starting backend
+2025-03-17 23:00:00,579 INFO    MainThread:1425577 [wandb_init.py:init():788] sending inform_init request
+2025-03-17 23:00:00,582 INFO    MainThread:1425577 [backend.py:_multiprocessing_setup():101] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2025-03-17 23:00:00,582 INFO    MainThread:1425577 [wandb_init.py:init():798] backend started and connected
+2025-03-17 23:00:00,585 INFO    MainThread:1425577 [wandb_init.py:init():891] updated telemetry
+2025-03-17 23:00:00,590 INFO    MainThread:1425577 [wandb_init.py:init():915] communicating run to backend with 90.0 second timeout
+2025-03-17 23:00:00,893 INFO    MainThread:1425577 [wandb_init.py:init():990] starting run threads in backend
+2025-03-17 23:00:00,974 INFO    MainThread:1425577 [wandb_run.py:_console_start():2375] atexit reg
+2025-03-17 23:00:00,975 INFO    MainThread:1425577 [wandb_run.py:_redirect():2227] redirect: wrap_raw
+2025-03-17 23:00:00,976 INFO    MainThread:1425577 [wandb_run.py:_redirect():2292] Wrapping output streams.
+2025-03-17 23:00:00,976 INFO    MainThread:1425577 [wandb_run.py:_redirect():2315] Redirects installed.
+2025-03-17 23:00:00,980 INFO    MainThread:1425577 [wandb_init.py:init():1032] run started, returning control to user process
+2025-03-17 23:07:02,570 INFO    MsgRouterThr:1425577 [mailbox.py:close():129] Closing mailbox, abandoning 1 handles.

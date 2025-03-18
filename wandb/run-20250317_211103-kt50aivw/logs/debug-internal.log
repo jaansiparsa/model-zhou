@@ -1,0 +1,15 @@
+{"time":"2025-03-17T21:11:03.557002632Z","level":"INFO","msg":"stream: starting","core version":"0.19.8","symlink path":"/home/jaansi/fa24-nmep-hw2/wandb/run-20250317_211103-kt50aivw/logs/debug-core.log"}
+{"time":"2025-03-17T21:11:03.772318471Z","level":"INFO","msg":"created new stream","id":"kt50aivw"}
+{"time":"2025-03-17T21:11:03.772356948Z","level":"INFO","msg":"stream: started","id":"kt50aivw"}
+{"time":"2025-03-17T21:11:03.772477201Z","level":"INFO","msg":"writer: Do: started","stream_id":"kt50aivw"}
+{"time":"2025-03-17T21:11:03.772521201Z","level":"INFO","msg":"handler: started","stream_id":"kt50aivw"}
+{"time":"2025-03-17T21:11:03.77262476Z","level":"INFO","msg":"sender: started","stream_id":"kt50aivw"}
+{"time":"2025-03-17T21:11:03.98476008Z","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-03-17T21:24:55.049647843Z","level":"INFO","msg":"stream: closing","id":"kt50aivw"}
+{"time":"2025-03-17T21:24:55.049687752Z","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-03-17T21:24:55.050782835Z","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-03-17T21:24:55.503415952Z","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-03-17T21:24:55.63187112Z","level":"INFO","msg":"handler: closed","stream_id":"kt50aivw"}
+{"time":"2025-03-17T21:24:55.631921735Z","level":"INFO","msg":"sender: closed","stream_id":"kt50aivw"}
+{"time":"2025-03-17T21:24:55.631914082Z","level":"INFO","msg":"writer: Close: closed","stream_id":"kt50aivw"}
+{"time":"2025-03-17T21:24:55.632099Z","level":"INFO","msg":"stream: closed","id":"kt50aivw"}

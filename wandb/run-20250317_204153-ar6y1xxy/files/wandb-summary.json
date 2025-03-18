@@ -1,0 +1,1 @@
+{"_wandb":{"runtime":121},"val_loss_epoch":0.9361410426139831,"_runtime":119.774506643,"n_flops":886440,"epoch":19,"_step":59,"n_params":83126,"val_loss":0.9361410426139831,"batch_train_acc":68.75,"batch_train_loss":0.8194929361343384,"_timestamp":1.7422442328294497e+09,"val_acc":67.69,"val_acc_epoch":67.69,"train_acc":73.826,"train_loss":0.7427091193389893}

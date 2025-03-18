@@ -1,0 +1,9 @@
+{"time":"2025-03-18T01:09:26.444074157Z","level":"INFO","msg":"stream: starting","core version":"0.19.8","symlink path":"/home/jaansi/fa24-nmep-hw2/wandb/run-20250318_010926-5o1algrz/logs/debug-core.log"}
+{"time":"2025-03-18T01:09:26.664738594Z","level":"INFO","msg":"created new stream","id":"5o1algrz"}
+{"time":"2025-03-18T01:09:26.664804936Z","level":"INFO","msg":"stream: started","id":"5o1algrz"}
+{"time":"2025-03-18T01:09:26.664840199Z","level":"INFO","msg":"writer: Do: started","stream_id":"5o1algrz"}
+{"time":"2025-03-18T01:09:26.664909622Z","level":"INFO","msg":"handler: started","stream_id":"5o1algrz"}
+{"time":"2025-03-18T01:09:26.664998907Z","level":"INFO","msg":"sender: started","stream_id":"5o1algrz"}
+{"time":"2025-03-18T01:09:26.859604918Z","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-03-18T01:12:42.28422539Z","level":"ERROR","msg":"HTTP error","status":404,"method":"POST","url":"https://api.wandb.ai/files/jaansi-n-a/MLAB%20HW%202/5o1algrz/file_stream"}
+{"time":"2025-03-18T01:12:42.284313779Z","level":"ERROR+4","msg":"filestream: fatal error: filestream: failed to upload: 404 Not Found path=files/jaansi-n-a/MLAB HW 2/5o1algrz/file_stream: {\"error\":\"run MLAB HW 2/5o1algrz not found while streaming file\"}"}

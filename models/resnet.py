@@ -5,6 +5,7 @@ Reference:
 [1] Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun
     Deep Residual Learning for Image Recognition. arXiv:1512.03385
 """
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -35,19 +36,27 @@ class ResNetBlock(nn.Module):
         When performing a forward pass, the ReLU activation should be applied after the first batchnorm layer
         and after the second batchnorm gets added to the shortcut.
         """
-        ## YOUR CODE HERE
 
         ## Initialize the block with a call to super and make your conv and batchnorm layers.
         super(ResNetBlock, self).__init__()
-        # TODO: Initialize conv and batch norm layers with the correct parameters
 
         ## Use some conditional logic when defining your shortcut layer
         ## For a no-op layer, consider creating an empty nn.Sequential()
-        self.shortcut = None  # ???
-        # TODO: Code here to initialize the shortcut layer
+        self.no_shortcut = nn.Sequential(
+            self.conv(in_channels, out_channels, kernel_size=3, stride=stride),
+            nn.BatchNorm2d(out_channels),
+            nn.ReLU(),
+            self.conv(out_channels, out_channels, kernel_size=3, stride=1),
+            nn.BatchNorm2d(out_channels),
+        )
 
-        ## END YOUR CODE
-
+        self.shortcut = nn.Sequential()  # shortcut layer
+        if stride != 1 or in_channels != out_channels:
+            self.shortcut = nn.Sequential(
+                nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=stride),
+                nn.BatchNorm2d(out_channels)
+            )
+    
     def forward(self, x):
         """
         Compute a forward pass of this batch of data on this residual block.
@@ -55,59 +64,155 @@ class ResNetBlock(nn.Module):
         x: batch of images of shape (batch_size, num_channels, width, height)
         returns: result of passing x through this block
         """
-        ## YOUR CODE HERE
-        ## TODO: Call the first convolution, batchnorm, and activation
+        conv_x = self.no_shortcut(x) # 2 conv and 2 batchnorms
+        skip_x = self.shortcut(x) # Also call the shortcut layer on the original input
 
-        ## TODO: Call the second convolution and batchnorm
+        # Sum the result of the shortcut and the result of the second batchnorm
+        # and apply your activation
+        out = F.relu(conv_x + skip_x)
+        return out
 
-        ## TODO: Also call the shortcut layer on the original input
-
-        ## TODO: Sum the result of the shortcut and the result of the second batchnorm
-        ## and apply your activation
-
-        # return out
-        ## END YOUR CODE
-        pass  # Remove this line when you implement this function
+    def conv(self, in_channels, out_channels, kernel_size, stride):
+        return nn.Conv2d(in_channels, out_channels, kernel_size, stride, padding=1, bias=False)
 
 
 class ResNet18(nn.Module):
     def __init__(self, num_classes=200):
         # Read the following, and uncomment it when you understand it, no need to add more code
-        # num_classes = num_classes
-        # super(ResNet18, self).__init__()
-        # self.in_channels = 64
-        # self.conv1 = nn.Conv2d(in_channels=3,
-        #                        out_channels=64,
-        #                        kernel_size=3,
-        #                        stride=1,
-        #                        padding=1,
-        #                        bias=False)
-        # self.bn1 = nn.BatchNorm2d(64)
-        # self.layer1 = self.make_block(out_channels=64, stride=1)
-        # self.layer2 = self.make_block(out_channels=128, stride=2)
-        # self.layer3 = self.make_block(out_channels=256, stride=2)
-        # self.layer4 = self.make_block(out_channels=512, stride=2)
-        # self.linear = nn.Linear(512, num_classes)
-        pass  # Remove this line when you uncomment the above code
+        num_classes = num_classes
+        super(ResNet18, self).__init__()
+        self.in_channels = 64
+        self.conv1 = nn.Conv2d(in_channels=3,
+                               out_channels=64,
+                               kernel_size=3,
+                               stride=1,
+                               padding=1,
+                               bias=False)
+        self.bn1 = nn.BatchNorm2d(64)
+        self.layer1 = self.make_block(out_channels=64, stride=1)
+        self.layer2 = self.make_block(out_channels=128, stride=2)
+        self.layer3 = self.make_block(out_channels=256, stride=2)
+        self.layer4 = self.make_block(out_channels=512, stride=2)
+        self.linear = nn.Linear(512, num_classes)
 
     def make_block(self, out_channels, stride):
         # Read the following, and uncomment it when you understand it, no need to add more code
-        # layers = []
-        # for stride in [stride, 1]:
-        #     layers.append(ResNetBlock(self.in_channels, out_channels, stride))
-        #     self.in_channels = out_channels
-        # return nn.Sequential(*layers)
-        pass  # Remove this line when you uncomment the above code
+        layers = []
+        for stride in [stride, 1]:
+            layers.append(ResNetBlock(self.in_channels, out_channels, stride))
+            self.in_channels = out_channels
+        return nn.Sequential(*layers)
 
     def forward(self, x):
         # Read the following, and uncomment it when you understand it, no need to add more code
-        # x = F.relu(self.bn1(self.conv1(x)))
-        # x = self.layer1(x)
-        # x = self.layer2(x)
-        # x = self.layer3(x)
-        # x = self.layer4(x)
-        # x = F.avg_pool2d(x, 4)
-        # x = torch.flatten(x, 1)
-        # x = self.linear(x)
-        # return x
-        pass  # Remove this line when you uncomment the above code
+        x = F.relu(self.bn1(self.conv1(x)))
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
+        x = F.avg_pool2d(x, 4)
+        x = torch.flatten(x, 1)
+        x = self.linear(x)
+        return x
+
+class ResNetDeep(nn.Module):
+    def __init__(self, num_classes=200):
+        # Read the following, and uncomment it when you understand it, no need to add more code
+        num_classes = num_classes
+        super(ResNetDeep, self).__init__()
+        self.in_channels = 64
+        self.conv1 = nn.Conv2d(in_channels=3,
+                               out_channels=64,
+                               kernel_size=3,
+                               stride=1,
+                               padding=1,
+                               bias=False)
+        self.bn1 = nn.BatchNorm2d(64)
+        self.conv64 = nn.Sequential(*[self.make_block(out_channels=64, stride=1) for _ in range(2)])
+        self.maxpool1 = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.conv128 = nn.Sequential(*[self.make_block(out_channels=128, stride=1) for _ in range(2)])
+        self.maxpool2 = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.conv256 = nn.Sequential(*[self.make_block(out_channels=256, stride=1) for _ in range(3)])
+        self.maxpool3 = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.conv512 = nn.Sequential(*[self.make_block(out_channels=512, stride=1) for _ in range(2)])
+
+        self.dropout = nn.Dropout(0.35)
+        self.linear = nn.Linear(512, num_classes)
+
+    def make_block(self, out_channels, stride):
+        # Read the following, and uncomment it when you understand it, no need to add more code
+        layers = []
+        for stride in [stride, 1]:
+            layers.append(ResNetBlock(self.in_channels, out_channels, stride))
+            self.in_channels = out_channels
+        return nn.Sequential(*layers)
+
+    def forward(self, x):
+        # Read the following, and uncomment it when you understand it, no need to add more code
+        x = F.relu(self.bn1(self.conv1(x)))
+        x = self.conv64(x)
+        x = self.maxpool1(x)
+        x = self.conv128(x)
+        x = self.maxpool2(x)
+        x = self.conv256(x)
+        x = self.maxpool3(x)
+        x = self.conv512(x)
+
+        x = F.avg_pool2d(x, 4)
+        x = torch.flatten(x, 1)
+        x = self.dropout(x)
+        x = self.linear(x)
+        return x
+
+class ResNetDeep96x96(nn.Module):
+    def __init__(self, num_classes=200):
+        # Read the following, and uncomment it when you understand it, no need to add more code
+        num_classes = num_classes
+        super(ResNetDeep96x96, self).__init__()
+        self.in_channels = 64
+        self.conv1 = nn.Conv2d(in_channels=3,
+                               out_channels=64,
+                               kernel_size=3,
+                               stride=1,
+                               padding=1,
+                               bias=False)
+        self.bn1 = nn.BatchNorm2d(64)
+        self.conv64 = nn.Sequential(*[self.make_block(out_channels=64, stride=1) for _ in range(2)])
+        self.maxpool1 = nn.MaxPool2d(kernel_size=3, stride=3)
+        self.conv128 = nn.Sequential(*[self.make_block(out_channels=128, stride=1) for _ in range(2)])
+        self.maxpool2 = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.conv256_1 = nn.Sequential(*[self.make_block(out_channels=256, stride=1) for _ in range(3)])
+        self.maxpool3 = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.conv256_2 = nn.Sequential(*[self.make_block(out_channels=512, stride=1) for _ in range(3)])
+        self.maxpool4 = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.conv512 = nn.Sequential(*[self.make_block(out_channels=512, stride=1) for _ in range(2)])
+
+        self.dropout = nn.Dropout(0.35)
+        self.linear = nn.Linear(512, num_classes)
+
+    def make_block(self, out_channels, stride):
+        # Read the following, and uncomment it when you understand it, no need to add more code
+        layers = []
+        for stride in [stride, 1]:
+            layers.append(ResNetBlock(self.in_channels, out_channels, stride))
+            self.in_channels = out_channels
+        return nn.Sequential(*layers)
+
+    def forward(self, x):
+        # Read the following, and uncomment it when you understand it, no need to add more code
+        x = F.relu(self.bn1(self.conv1(x)))
+        x = self.conv64(x)
+        x = self.maxpool1(x)
+        x = self.conv128(x)
+        x = self.maxpool2(x)
+        x = self.conv256_1(x)
+        x = self.maxpool3(x)
+        x = self.conv256_2(x)
+        x = self.maxpool4(x)
+        x = self.conv512(x)
+
+        x = F.avg_pool2d(x, 4)
+        x = torch.flatten(x, 1)
+        x = self.dropout(x)
+        x = self.linear(x)
+        return x

@@ -1,0 +1,7 @@
+{"time":"2025-03-18T01:40:25.771823972Z","level":"INFO","msg":"stream: starting","core version":"0.19.8","symlink path":"/home/jaansi/fa24-nmep-hw2/wandb/run-20250318_014025-io3i8czo/logs/debug-core.log"}
+{"time":"2025-03-18T01:40:25.988660429Z","level":"INFO","msg":"created new stream","id":"io3i8czo"}
+{"time":"2025-03-18T01:40:25.988731982Z","level":"INFO","msg":"stream: started","id":"io3i8czo"}
+{"time":"2025-03-18T01:40:25.988757177Z","level":"INFO","msg":"handler: started","stream_id":"io3i8czo"}
+{"time":"2025-03-18T01:40:25.98882079Z","level":"INFO","msg":"sender: started","stream_id":"io3i8czo"}
+{"time":"2025-03-18T01:40:25.988848298Z","level":"INFO","msg":"writer: Do: started","stream_id":"io3i8czo"}
+{"time":"2025-03-18T01:40:26.148111324Z","level":"INFO","msg":"Starting system monitor"}

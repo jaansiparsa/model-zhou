@@ -193,9 +193,10 @@ I'm pretty sure I already explained this but ok
 - finally evaluates on test data
 
 ## 3.2 Go through `validate()` and `evaluate()`. What do they do? How are they different? 
-> Could we have done better by reusing code? Yes. Yes we could have but we didn't... sorry...
+> Could we have done better by reusing code? Yes. Yes we could have but we didn't... sorry... >
+
 validate() calculates loss to update weights as part of training process (using training data)
-evaluate() also calculates accuracy but doesn't update weights because it's own test data
+evaluate() also calculates accuracy but doesn't update weights because it's own test data`
 
 # Part 4: AlexNet
 
@@ -231,10 +232,44 @@ Linear with num_classes output units
 
 Report training and validation accuracy on AlexNet and LeNet. Report hyperparameters for both models (learning rate, batch size, optimizer, etc.). We get ~77% validation with AlexNet.
 
-> You can just copy the config file, don't need to write it all out again.
-> Also no need to tune the models much, you'll do it in the next part.
+> You can just copy the config file, don't need to write it all out again. >
+> Also no need to tune the models much, you'll do it in the next part. >
 
-`77.62%`
+Validation accuracies: Alexnet max: 77.35%, Lenet max: 67.69
+Training accuracies: Alexnet max: 99.87, Lenet max: 73.83
+
+Alexnet:
+AUG:
+  COLOR_JITTER: 0.4
+DATA:
+  BATCH_SIZE: 256
+  DATASET: "cifar10"
+  IMG_SIZE: 70
+  NUM_WORKERS: 32
+  PIN_MEMORY: True
+MODEL:
+  NAME: alexnet
+  NUM_CLASSES: 200
+  DROP_RATE: 0.0
+TRAIN:
+  EPOCHS: 50
+  WARMUP_EPOCHS: 10
+  LR: 3e-4
+  MIN_LR: 3e-5
+  WARMUP_LR: 3e-5
+  LR_SCHEDULER:
+    NAME: "cosine"
+  OPTIMIZER:
+    NAME: "adamw"
+    EPS: 1e-8
+    BETAS: (0.9, 0.999)
+    MOMENTUM: 0.9
+OUTPUT: "output/alexnet_cifar"
+SAVE_FREQ: 5
+PRINT_FREQ: 99999
+PRINT_FREQ: 99999
+
+Lenet: same as configs in configs file
 
 
 # Part 5: Weights and Biases
@@ -247,28 +282,48 @@ Report training and validation accuracy on AlexNet and LeNet. Report hyperparame
 
 ## 5.0 Setup plotting for training and validation accuracy and loss curves. Plot a point every epoch.
 
-`PUSH YOUR CODE TO YOUR OWN GITHUB :)`
+`code is pushed to my github!`
 
 ## 5.1 Plot the training and validation accuracy and loss curves for AlexNet and LeNet. Attach the plot and any observations you have below.
 
-`YOUR ANSWER HERE`
+q5base.png images folder
+Alexnet had much higher accuracies and steeper curves
 
 ## 5.2 For just AlexNet, vary the learning rate by factors of 3ish or 10 (ie if it's 3e-4 also try 1e-4, 1e-3, 3e-3, etc) and plot all the loss plots on the same graph. What do you observe? What is the best learning rate? Try at least 4 different learning rates.
 
-`YOUR ANSWER HERE`
+result in images/lr_comparison
+3e-4: red
+1e-4: pink
+1e-3: mint green
+3e-3: orange
+
+The bigger the learning rate, the worse the accuracies tended to be. Also, the bigger the learning rate, the quicker the loss would just plateau.
 
 ## 5.3 Do the same with batch size, keeping learning rate and everything else fixed. Ideally the batch size should be a power of 2, but try some odd batch sizes as well. What do you observe? Record training times and loss/accuracy plots for each batch size (should be easy with W&B). Try at least 4 different batch sizes.
 
-`YOUR ANSWER HERE`
+Comparison graphs in images/batch_comparisons
+also the red is 256 batch size and the pink is 128 batch size, green is 420, yellow is 512
+The lower the batch size, the higher the val loss (typically) 
+The odd batch size (not a power of 2) had the lowest val loss
+All converged around the same accuracy but 256 batch size did the best
 
 ## 5.4 As a followup to the previous question, we're going to explore the effect of batch size on _throughput_, which is the number of images/sec that our model can process. You can find this by taking the batch size and dividing by the time per epoch. Plot the throughput for batch sizes of powers of 2, i.e. 1, 2, 4, ..., until you reach CUDA OOM. What is the largest batch size you can support? What trends do you observe, and why might this be the case?
 You only need to observe the training for ~ 5 epochs to average out the noise in training times; don't train to completion for this question! We're only asking about the time taken. If you're curious for a more in-depth explanation, feel free to read [this intro](https://horace.io/brrr_intro.html). 
 
-`YOUR ANSWER HERE`
+tried starting at 1 but it kept taking outrageously long and then would crash out so then 
+I just started at 32 and then went until 16384 (2^14) OUT OF MEMORY ERROR YAAYAAYY FINALLY
+basically throughput increased as batch size increased
+wasnt like directly proportional to batch size but some sort of positive relationship
+image of graph is in images/ihatedthis
+if i have to type python main.py --cfg configs/alexnet.yaml again i will scream
 
 ## 5.5 Try different data augmentations. Take a look [here](https://pytorch.org/vision/stable/transforms.html) for torchvision augmentations. Try at least 2 new augmentation schemes. Record loss/accuracy curves and best accuracies on validation/train set.
 
-`YOUR ANSWER HERE`
+augmentation code in datasets.py
+image of comparison in images/augmentations
+The original augmentation had the best results.
+I tried a new augmentation where it did a random vertical flip rather than horizontal flip and added RandomPerspective() which had lower training accuracy and validation accuracy. This makes sense since objects look really different vertically from normal and typically look the same horizontally reflected. 
+I also tried only having a random vertical flip and this had high training accuracy and high val loss but really low val accuracy so it definitely was overfitting
 
 ## 5.6 (optional) Play around with more hyperparameters. I recommend playing around with the optimizer (Adam, SGD, RMSProp, etc), learning rate scheduler (constant, StepLR, ReduceLROnPlateau, etc), weight decay, dropout, activation functions (ReLU, Leaky ReLU, GELU, Swish, etc), etc.
 
@@ -283,6 +338,9 @@ You only need to observe the training for ~ 5 epochs to average out the noise in
 In `models/*`, we provided some skelly/guiding comments to implement ResNet. Implement it and train it on CIFAR10. Report training and validation curves, hyperparameters, best validation accuracy, and training time as compared to AlexNet. 
 
 `YOUR ANSWER HERE`
+Alexnet takes about 7 mins to train
+Resnet took 41 mins
+all the info is in images/resnet.png
 
 ## 6.1 (optional) Visualize examples
 
@@ -312,3 +370,5 @@ We don't expect anything fancy here. Just a brief summary of what you did, what 
 **REQUIREMENT**: Everyone in your group must be able to explain what you did! Even if one person carries (I know, it happens) everyone must still be able to explain what's going on!
 
 Now go play with the models and have some competitive fun! 🎉
+
+Ethan submitted this part!

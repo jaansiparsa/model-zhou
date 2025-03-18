@@ -1,0 +1,15 @@
+{"time":"2025-03-18T00:36:52.873728537Z","level":"INFO","msg":"stream: starting","core version":"0.19.8","symlink path":"/home/jaansi/fa24-nmep-hw2/wandb/run-20250318_003652-7lah9f4l/logs/debug-core.log"}
+{"time":"2025-03-18T00:36:53.095183329Z","level":"INFO","msg":"created new stream","id":"7lah9f4l"}
+{"time":"2025-03-18T00:36:53.095259256Z","level":"INFO","msg":"stream: started","id":"7lah9f4l"}
+{"time":"2025-03-18T00:36:53.095302772Z","level":"INFO","msg":"writer: Do: started","stream_id":"7lah9f4l"}
+{"time":"2025-03-18T00:36:53.095374553Z","level":"INFO","msg":"handler: started","stream_id":"7lah9f4l"}
+{"time":"2025-03-18T00:36:53.095394391Z","level":"INFO","msg":"sender: started","stream_id":"7lah9f4l"}
+{"time":"2025-03-18T00:36:53.243920402Z","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-03-18T01:01:14.813740886Z","level":"INFO","msg":"stream: closing","id":"7lah9f4l"}
+{"time":"2025-03-18T01:01:14.813789389Z","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-03-18T01:01:14.815054755Z","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-03-18T01:01:15.257434656Z","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-03-18T01:01:15.46038721Z","level":"INFO","msg":"handler: closed","stream_id":"7lah9f4l"}
+{"time":"2025-03-18T01:01:15.460478118Z","level":"INFO","msg":"writer: Close: closed","stream_id":"7lah9f4l"}
+{"time":"2025-03-18T01:01:15.460510113Z","level":"INFO","msg":"sender: closed","stream_id":"7lah9f4l"}
+{"time":"2025-03-18T01:01:15.460685407Z","level":"INFO","msg":"stream: closed","id":"7lah9f4l"}

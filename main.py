@@ -20,6 +20,9 @@ from models import build_model
 from optimizer import build_optimizer
 from utils import create_logger, load_checkpoint, save_checkpoint
 
+import wandb
+wandb.login()
+
 
 def parse_option():
     parser = argparse.ArgumentParser("Vision model training and evaluation script", add_help=False)
@@ -51,6 +54,8 @@ def main(config):
     dataset_train, dataset_val, dataset_test, data_loader_train, data_loader_val, data_loader_test = build_loader(
         config
     )
+
+    wandb.init(project="MLAB HW 2", name="resnet", config=config)
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model = build_model(config)
@@ -87,7 +92,7 @@ def main(config):
     logger.info("Start training")
     start_time = time.time()
     for epoch in range(config.TRAIN.START_EPOCH, config.TRAIN.EPOCHS):
-        train_acc1, train_loss = train_one_epoch(config, model, criterion, data_loader_train, optimizer, epoch)
+        train_acc1, train_loss, epoch_time = train_one_epoch(config, model, criterion, data_loader_train, optimizer, epoch)
         logger.info(f" * Train Acc {train_acc1:.3f} Train Loss {train_loss:.3f}")
         logger.info(f"Accuracy of the network on the {len(dataset_train)} train images: {train_acc1:.1f}%")
 
@@ -103,13 +108,18 @@ def main(config):
         logger.info(f"Max accuracy: {max_accuracy:.2f}%\n")
         lr_scheduler.step()
 
+        tp = config.DATA.BATCH_SIZE/epoch_time
+
         log_stats = {"epoch": epoch, "n_params": n_parameters, "n_flops": n_flops,
                      "train_acc": train_acc1, "train_loss": train_loss, 
-                     "val_acc": val_acc1, "val_loss": val_loss}
+                     "val_acc": val_acc1, "val_loss": val_loss, "throughput": tp}
         with open(
                 os.path.join(config.OUTPUT, "metrics.json"), mode="a", encoding="utf-8"
             ) as f:
                 f.write(json.dumps(log_stats) + "\n")
+        
+        wandb.log(log_stats)
+
 
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
@@ -160,7 +170,13 @@ def train_one_epoch(config, model, criterion, data_loader, optimizer, epoch):
     )
     epoch_time = time.time() - start
     logger.info(f"EPOCH {epoch} training takes {datetime.timedelta(seconds=int(epoch_time))}")
-    return acc1_meter.avg, loss_meter.avg
+
+    wandb.log({
+    "batch_train_loss": loss_meter.val,
+    "batch_train_acc": acc1_meter.val
+    })
+
+    return acc1_meter.avg, loss_meter.avg, epoch_time
 
 
 @torch.no_grad()
@@ -199,6 +215,12 @@ def validate(config, data_loader, model):
         f"Acc@1 {acc1_meter.val:.3f} ({acc1_meter.avg:.3f})\t"
         f"Mem {memory_used:.0f}MB"
     )
+
+    wandb.log({
+    "val_loss_epoch": loss_meter.avg,
+    "val_acc_epoch": acc1_meter.avg
+    })
+
     return acc1_meter.avg, loss_meter.avg
 
 

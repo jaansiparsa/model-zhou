@@ -115,11 +115,27 @@ class CIFAR10Dataset(Dataset):
     def _get_transforms(self):
         if self.train:
             transform = [
+
+                # first augmentation version
                 transforms.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4),
                 transforms.RandomHorizontalFlip(),
                 transforms.ToTensor(),
                 transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
                 transforms.Resize([self.img_size] * 2),
+
+                # second augmentation version
+                # transforms.RandomVerticalFlip(),
+                # transforms.RandomPerspective(),
+                # transforms.ToTensor(),
+                # transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+                # transforms.Resize([self.img_size] * 2),
+
+                # third augmentation version
+                # transforms.RandomVerticalFlip(),
+                # transforms.ToTensor(),
+                # transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+                # transforms.Resize([self.img_size] * 2),
+
             ]
         else:
             transform = [
